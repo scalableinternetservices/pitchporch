@@ -1,6 +1,20 @@
-# bespin
+# PitchPorch
 
-Welcome to Cloud City!
+## Meet the Team
+
+**Stewart Dulaney**
+<br><img alt="Stewart Dulaney" src="https://user-images.githubusercontent.com/15070230/95630367-92a91b80-0a36-11eb-9712-19795b70a45c.jpg" width="250px">
+
+**Sarthak More**
+<br><img alt="Sarthak More" src="https://user-images.githubusercontent.com/15070230/95630646-0c410980-0a37-11eb-8b03-ed968f24c0c1.jpg" width="250px">
+
+**Nikhil Srikumar**
+<br><img alt="Nikhil Srikumar" src="https://user-images.githubusercontent.com/15070230/95630420-a6ed1880-0a36-11eb-8031-7acd5c339259.png" width="250px">
+
+**Denise Wang**
+<br><img alt="Denise Wang" src="https://user-images.githubusercontent.com/15070230/95630385-963ca280-0a36-11eb-9d9c-4234b4e03e64.jpg" width="250px">
+
+
 
 ## Dependencies
 
