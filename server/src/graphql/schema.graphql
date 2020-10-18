@@ -39,6 +39,14 @@ type User {
   userType: UserType!
   email: String!
   name: String!
+  projectsCreated: [Project]!
+}
+
+type Project {
+  id: Int!
+  title: String!
+  description: String!
+  createdBy: User!
 }
 
 enum UserType { ADMIN, USER }
