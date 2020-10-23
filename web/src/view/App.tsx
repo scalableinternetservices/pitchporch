@@ -13,6 +13,7 @@ import { Route } from './nav/route'
 import { HomePage } from './page/HomePage'
 import { LecturesPage } from './page/LecturesPage'
 import { PlaygroundPage } from './page/PlaygroundPage'
+import { ProjectPost } from './page/ProjectPost'
 import { ProjectsPage } from './page/ProjectsPage'
 
 const Styletron = require('styletron-engine-monolithic')
@@ -55,6 +56,7 @@ export function AppBody() {
         <HomePage path={Route.HOME} />
         <LecturesPage path={Route.LECTURES} />
         <ProjectsPage path={Route.PROJECTS} />
+        <ProjectPost path={Route.PROJECT_POST} />
         <PlaygroundPage path={Route.PLAYGROUND} />
         <PlaygroundPage path={Route.PLAYGROUND_APP} />
       </Router>

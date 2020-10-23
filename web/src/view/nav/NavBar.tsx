@@ -27,6 +27,10 @@ const otherTabs = [
     path: getPath(Route.PROJECTS),
   },
   {
+    name: 'project post',
+    path: getPath(Route.PROJECT_POST),
+  },
+  {
     name: 'playground',
     path: getPath(Route.PLAYGROUND),
   },
