@@ -1,5 +1,6 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 import { User as GraphqlUser, UserType } from '../graphql/schema.types'
+import { Project } from './Project'
 
 @Entity()
 export class User extends BaseEntity implements GraphqlUser {
@@ -29,4 +30,7 @@ export class User extends BaseEntity implements GraphqlUser {
     nullable: true,
   })
   name: string
+
+  @OneToMany(() => Project, project => project.createdBy)
+  projectsCreated: Project[];
 }
