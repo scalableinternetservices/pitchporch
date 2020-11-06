@@ -29,6 +29,7 @@ export const graphqlRoot: Resolvers<Context> = {
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     users: () => User.find(),
+    project: async (_, { projectId }) => (await Project.findOne({ where: { id: projectId } })) || null,
     projects: () => Project.find()
   },
   Mutation: {
