@@ -9,8 +9,10 @@ export enum Route {
   LECTURES = 'app/lectures',
   PROFILE = 'app/profile',
   PROJECTS = 'app/projects',
+  PROJECT_POST = 'app/projectpost',
   PLAYGROUND = 'app/playground',
   PLAYGROUND_APP = 'app/playground/:app',
+  FORUM_PAGE = 'app/forumpage',
 }
 
 export enum PlaygroundApp {
