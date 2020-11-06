@@ -17,6 +17,7 @@ export interface Query {
   self?: Maybe<User>
   surveys: Array<Survey>
   survey?: Maybe<Survey>
+  user?: Maybe<User>
   users: Array<User>
   project?: Maybe<Project>
   projects: Array<Project>
@@ -24,6 +25,10 @@ export interface Query {
 
 export interface QuerySurveyArgs {
   surveyId: Scalars['Int']
+}
+
+export interface QueryUserArgs {
+  userId: Scalars['Int']
 }
 
 export interface QueryProjectArgs {
@@ -233,6 +238,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QuerySurveyArgs, 'surveyId'>
   >
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'userId'>>
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>
   project?: Resolver<
     Maybe<ResolversTypes['Project']>,

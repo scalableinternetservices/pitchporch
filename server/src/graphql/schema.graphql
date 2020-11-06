@@ -21,6 +21,7 @@ type Query {
   surveys: [Survey!]!
   survey(surveyId: Int!): Survey
 
+  user(userId: Int!): User
   users: [User!]!
   project(projectId: Int!): Project
   projects: [Project!]!
