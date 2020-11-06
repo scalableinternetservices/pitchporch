@@ -1,18 +1,19 @@
+// import { getApolloClient } from '../../graphql/apolloClient'
+import { useQuery } from '@apollo/client';
 import { RouteComponentProps } from '@reach/router';
 import * as React from 'react';
 import { ColorName, Colors } from '../../../../common/src/colors';
+import {
+  FetchUsers
+} from '../../graphql/query.gen';
 import { H2 } from '../../style/header';
 import { Spacer } from '../../style/spacer';
 import { style } from '../../style/styled';
 import { BodyText, IntroText } from '../../style/text';
 import { Link } from '../nav/Link';
 import { AppRouteParams } from '../nav/route';
+import { fetchUsers } from './fetchUsers';
 import { Page } from './Page';
-// import { getApolloClient } from '../../graphql/apolloClient'
-// import {
-//   FetchUserContext_self,
-//   FetchUserContext
-// } from '../../graphql/query.gen'
 
 interface ProfilePageProps extends RouteComponentProps, AppRouteParams {}
 
@@ -20,6 +21,16 @@ interface ProfilePageProps extends RouteComponentProps, AppRouteParams {}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ProfilePage(props: ProfilePageProps) {
+  const { loading, data } = useQuery<FetchUsers>(fetchUsers)
+
+
+  // const { loading, data } = useQuery<FetchUser, FetchUserVariables>(fetchUser, {
+  //   variables: { userId },
+  // })
+  console.log(loading);
+  if (!data || data.users.length === 0) {
+    return <div>no users</div>
+  }
   return (
     <Page>
       <Section>
@@ -31,8 +42,8 @@ export function ProfilePage(props: ProfilePageProps) {
         <Table>
           <tbody>
             <UserInfo
-              name="Nikhil Srikumar"
-              email="nikhil.srikumar@gmail.com"
+              name={data.users[0].name}
+              email={data.users[0].email}
               href="#"
               description="What is up with it"
               socialMedia={[
