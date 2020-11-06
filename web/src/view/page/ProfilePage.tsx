@@ -28,8 +28,9 @@ export function ProfilePage(props: ProfilePageProps) {
   //   variables: { userId },
   // })
   console.log(loading);
-  console.log(data);
-
+  if (!data || data.users.length === 0) {
+    return <div>no users</div>
+  }
   return (
     <Page>
       <Section>
@@ -41,8 +42,8 @@ export function ProfilePage(props: ProfilePageProps) {
         <Table>
           <tbody>
             <UserInfo
-              name="Nikhil Srikumar"
-              email="nikhil.srikumar@gmail.com"
+              name={data.users[0].name}
+              email={data.users[0].email}
               href="#"
               description="What is up with it"
               socialMedia={[
