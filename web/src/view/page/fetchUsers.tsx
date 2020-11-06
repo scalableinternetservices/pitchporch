@@ -1,10 +1,29 @@
-// import {gql} from '@apollo/client';
+import { gql } from '@apollo/client'
 
-// export const fetchUser = gql`
-//   query FetchSurveys {
-//     surveys {
-//       ...Survey
-//     }
-//   }
-//   ${fragmentSurvey}
-//   ${fragmentSurveyQuestion}
+export const fragmentUser = gql`
+  fragment User on User {
+    id
+    name
+    email
+  }
+`
+
+
+
+export const fetchUsers = gql`
+  query FetchUsers {
+    users {
+      ...User
+    }
+  }
+  ${fragmentUser}
+`
+
+export const fetchUser = gql`
+  query FetchUser($userId: Int!) {
+    user(userId: $userId) {
+      ...User
+    }
+  }
+  ${fragmentUser}
+`

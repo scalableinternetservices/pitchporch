@@ -24,6 +24,50 @@ export interface FetchUserContext {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchUsers
+// ====================================================
+
+export interface FetchUsers_users {
+  __typename: "User";
+  id: number;
+  name: string;
+  email: string;
+}
+
+export interface FetchUsers {
+  users: FetchUsers_users[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: FetchUser
+// ====================================================
+
+export interface FetchUser_user {
+  __typename: "User";
+  id: number;
+  name: string;
+  email: string;
+}
+
+export interface FetchUser {
+  user: FetchUser_user | null;
+}
+
+export interface FetchUserVariables {
+  userId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchSurveys
 // ====================================================
 
@@ -185,6 +229,22 @@ export interface NextSurveyQuestion {
 
 export interface NextSurveyQuestionVariables {
   surveyId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: User
+// ====================================================
+
+export interface User {
+  __typename: "User";
+  id: number;
+  name: string;
+  email: string;
 }
 
 /* tslint:disable */
