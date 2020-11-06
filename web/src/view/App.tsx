@@ -14,6 +14,7 @@ import { ForumPage } from './page/ForumPage'
 import { HomePage } from './page/HomePage'
 import { LecturesPage } from './page/LecturesPage'
 import { PlaygroundPage } from './page/PlaygroundPage'
+import { ProfilePage } from './page/ProfilePage'
 import { ProjectPost } from './page/ProjectPost'
 import { ProjectsPage } from './page/ProjectsPage'
 
@@ -56,6 +57,7 @@ export function AppBody() {
         <Redirect noThrow from="app/playground" to="surveys" />
         <HomePage path={Route.HOME} />
         <LecturesPage path={Route.LECTURES} />
+        <ProfilePage path={Route.PROFILE} />
         <ProjectsPage path={Route.PROJECTS} />
         <ForumPage path={Route.FORUM_PAGE} />
         <ProjectPost path={Route.PROJECT_POST} />

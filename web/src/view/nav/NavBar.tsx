@@ -23,6 +23,10 @@ const otherTabs = [
     path: getPath(Route.LECTURES),
   },
   {
+    name: 'profile',
+    path: getPath(Route.PROFILE),
+  },
+  {
     name: 'projects',
     path: getPath(Route.PROJECTS),
   },
