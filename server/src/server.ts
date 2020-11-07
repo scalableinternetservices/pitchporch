@@ -124,21 +124,28 @@ server.express.post(
 )
 
 server.express.post(
-  '/auth/createProject',
+  '/createProject',
   asyncRoute(async (req, res) => {
-    console.log('POST /auth/createProject')
-    // create Project model with data from HTTP request
-    let project = new Project()
-    project.title = req.body.title
-    project.description = req.body.description
-    project.createdBy = req.body.createdBy
-
-    // save the Project model to the database
-    project = await project.save()
-
-    res
-      .status(200)
-      .send('Success!')
+    console.log('POST /createProject')
+    // Check the user is logged in and get their id using authToken
+    const authToken = req.cookies.authToken || req.header('x-authtoken')
+    if (authToken) {
+      const session = await Session.findOne({ where: { authToken }, relations: ['user'] })
+      if (session) {
+        // create Project model with data from HTTP request
+        let project = new Project()
+        project.title = req.body.title
+        project.description = req.body.description
+        project.createdBy = session.user
+        // save the Project model to the database
+        project = await project.save()
+        res
+        .status(200)
+        .send('Success!')
+        return
+      }
+    }
+    res.status(403).send('Forbidden')
   })
 )
 
