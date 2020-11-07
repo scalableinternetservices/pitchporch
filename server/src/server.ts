@@ -15,6 +15,7 @@ import { GraphQLServer } from 'graphql-yoga'
 import { forAwaitEach, isAsyncIterable } from 'iterall'
 import path from 'path'
 import 'reflect-metadata'
+import { v4 as uuidv4 } from 'uuid'
 import { checkEqual, Unpromise } from '../../common/src/util'
 import { Config } from './config'
 import { migrate } from './db/migrate'
@@ -76,27 +77,6 @@ server.express.post(
 )
 
 server.express.post(
-  '/auth/createProject',
-  asyncRoute(async (req, res) => {
-    console.log('POST /auth/createProject')
-    // create Project model with data from HTTP request
-    let project = new Project()
-    project.title = req.body.title
-    project.description = req.body.description
-    project.createdBy = req.body.createdBy
-
-    // save the Project model to the database, refresh `project` to get ID
-    project = await project.save()
-
-    const authToken = await createSession(user)
-    res
-      .status(200)
-      .cookie('authToken', authToken, { maxAge: SESSION_DURATION, path: '/', httpOnly: true, secure: Config.isProd })
-      .send('Success!')
-  })
-)
-
-server.express.post(
   '/auth/login',
   asyncRoute(async (req, res) => {
     console.log('POST /auth/login')
@@ -140,6 +120,25 @@ server.express.post(
       await Session.delete({ authToken })
     }
     res.status(200).cookie('authToken', '', { maxAge: 0 }).send('Success!')
+  })
+)
+
+server.express.post(
+  '/auth/createProject',
+  asyncRoute(async (req, res) => {
+    console.log('POST /auth/createProject')
+    // create Project model with data from HTTP request
+    let project = new Project()
+    project.title = req.body.title
+    project.description = req.body.description
+    project.createdBy = req.body.createdBy
+
+    // save the Project model to the database
+    project = await project.save()
+
+    res
+      .status(200)
+      .send('Success!')
   })
 )
 

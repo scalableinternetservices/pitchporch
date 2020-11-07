@@ -152,7 +152,6 @@ function SprintSchedule() {
           <Sprint
             day="Fri Oct 30"
             title="Write features"
-            href="https://docs.google.com/document/d/1nTnp3iIGZ5fpIpDVBciBoFAJ0f792RL_W6kmT6HrJnQ/edit?usp=sharing"
             checklist={['modify the starter code implement your features', 'commit and push code to GitHub']}
           />
           <Sprint
