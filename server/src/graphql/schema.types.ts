@@ -19,6 +19,7 @@ export interface Query {
   survey?: Maybe<Survey>
   user?: Maybe<User>
   users: Array<User>
+  project?: Maybe<Project>
   projects: Array<Project>
 }
 
@@ -30,10 +31,15 @@ export interface QueryUserArgs {
   userId: Scalars['Int']
 }
 
+export interface QueryProjectArgs {
+  projectId: Scalars['Int']
+}
+
 export interface Mutation {
   __typename?: 'Mutation'
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
+  addProject?: Maybe<Project>
 }
 
 export interface MutationAnswerSurveyArgs {
@@ -42,6 +48,12 @@ export interface MutationAnswerSurveyArgs {
 
 export interface MutationNextSurveyQuestionArgs {
   surveyId: Scalars['Int']
+}
+
+export interface MutationAddProjectArgs {
+  title: Scalars['String']
+  description: Scalars['String']
+  createdBy: Scalars['Int']
 }
 
 export interface Subscription {
@@ -187,9 +199,9 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>
   Mutation: ResolverTypeWrapper<{}>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
+  String: ResolverTypeWrapper<Scalars['String']>
   Subscription: ResolverTypeWrapper<{}>
   User: ResolverTypeWrapper<User>
-  String: ResolverTypeWrapper<Scalars['String']>
   Project: ResolverTypeWrapper<Project>
   UserType: UserType
   Survey: ResolverTypeWrapper<Survey>
@@ -204,9 +216,9 @@ export type ResolversParentTypes = {
   Int: Scalars['Int']
   Mutation: {}
   Boolean: Scalars['Boolean']
+  String: Scalars['String']
   Subscription: {}
   User: User
-  String: Scalars['String']
   Project: Project
   Survey: Survey
   SurveyQuestion: SurveyQuestion
@@ -228,6 +240,12 @@ export type QueryResolvers<
   >
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'userId'>>
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>
+  project?: Resolver<
+    Maybe<ResolversTypes['Project']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryProjectArgs, 'projectId'>
+  >
   projects?: Resolver<Array<ResolversTypes['Project']>, ParentType, ContextType>
 }
 
@@ -246,6 +264,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationNextSurveyQuestionArgs, 'surveyId'>
+  >
+  addProject?: Resolver<
+    Maybe<ResolversTypes['Project']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddProjectArgs, 'title' | 'description' | 'createdBy'>
   >
 }
 
