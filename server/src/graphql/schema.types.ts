@@ -32,8 +32,13 @@ export interface QueryUserArgs {
 
 export interface Mutation {
   __typename?: 'Mutation'
+  addUserToProject: Scalars['Boolean']
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
+}
+
+export interface MutationAddUserToProjectArgs {
+  input: AddUserToProjectInput
 }
 
 export interface MutationAnswerSurveyArgs {
@@ -60,6 +65,7 @@ export interface User {
   email: Scalars['String']
   name: Scalars['String']
   projectsCreated: Array<Maybe<Project>>
+  projectsPartOf: Array<Maybe<Project>>
 }
 
 export interface Project {
@@ -68,6 +74,7 @@ export interface Project {
   title: Scalars['String']
   description: Scalars['String']
   createdBy: User
+  usersInProject: Array<Maybe<User>>
 }
 
 export enum UserType {
@@ -104,6 +111,11 @@ export interface SurveyAnswer {
 export interface SurveyInput {
   questionId: Scalars['Int']
   answer: Scalars['String']
+}
+
+export interface AddUserToProjectInput {
+  projectId: Scalars['Int']
+  userId: Scalars['Int']
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -196,6 +208,7 @@ export type ResolversTypes = {
   SurveyQuestion: ResolverTypeWrapper<SurveyQuestion>
   SurveyAnswer: ResolverTypeWrapper<SurveyAnswer>
   SurveyInput: SurveyInput
+  AddUserToProjectInput: AddUserToProjectInput
 }
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -212,6 +225,7 @@ export type ResolversParentTypes = {
   SurveyQuestion: SurveyQuestion
   SurveyAnswer: SurveyAnswer
   SurveyInput: SurveyInput
+  AddUserToProjectInput: AddUserToProjectInput
 }
 
 export type QueryResolvers<
@@ -235,6 +249,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
+  addUserToProject?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddUserToProjectArgs, 'input'>
+  >
   answerSurvey?: Resolver<
     ResolversTypes['Boolean'],
     ParentType,

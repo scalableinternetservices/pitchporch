@@ -1,4 +1,4 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { User } from './User'
 
 @Entity()
@@ -21,7 +21,14 @@ export class Project extends BaseEntity {
   })
   description: string
 
-  @ManyToOne(() => User, user => user.projectsCreated)
+  @ManyToOne(() => User, user => user.projectsCreated, {
+    eager: true
+  })
   @JoinColumn()
-  createdBy: User;
+  createdBy: User
+
+  @ManyToMany(() => User, user => user.projectsPartOf, {
+    eager: true
+  })
+  usersInProject: User[]
 }

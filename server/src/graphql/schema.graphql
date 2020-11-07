@@ -26,6 +26,9 @@ type Query {
 }
 
 type Mutation {
+  # Add user to project
+  addUserToProject(input: AddUserToProjectInput!): Boolean!
+
   # Records an answer to a survey question presented in class.
   answerSurvey(input: SurveyInput!): Boolean!
 
@@ -45,6 +48,7 @@ type User {
   email: String!
   name: String!
   projectsCreated: [Project]!
+  projectsPartOf: [Project]!
 }
 
 type Project {
@@ -52,6 +56,7 @@ type Project {
   title: String!
   description: String!
   createdBy: User!
+  usersInProject: [User]!
 }
 
 enum UserType {
@@ -103,4 +108,9 @@ type SurveyAnswer {
 input SurveyInput {
   questionId: Int!
   answer: String!
+}
+
+input AddUserToProjectInput {
+  projectId: Int!
+  userId: Int!
 }
