@@ -12,7 +12,7 @@ export enum Route {
   PROJECT_POST = 'app/projectpost',
   PLAYGROUND = 'app/playground',
   PLAYGROUND_APP = 'app/playground/:app',
-  FORUM_PAGE = 'app/forumpage',
+  SEARCHPAGE = 'app/search'
 }
 
 export enum PlaygroundApp {
