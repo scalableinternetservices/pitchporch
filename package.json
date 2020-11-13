@@ -44,7 +44,7 @@
     "react-dom": "16.14.0",
     "react-responsive": "^8.1.0",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "2.0.1",
+    "semantic-ui-react": "^2.0.1",
     "simple-react-comments": "^1.1.0",
     "styletron-engine-monolithic": "0.0.3",
     "styletron-react": "^5.2.7",
