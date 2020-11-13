@@ -1,12 +1,16 @@
+import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { check } from '../../../../common/src/util'
 import { Button } from '../../style/button'
 import { Input } from '../../style/input'
+import { AppRouteParams } from '../nav/route'
 import { toastErr } from '../toast/toast'
 import { Page } from './Page'
 
-export function CreateProjectPage() {
+interface CreateProjectPageProps extends RouteComponentProps, AppRouteParams {}
+
+export function CreateProjectPage(props: CreateProjectPageProps) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [err, setError] = useState({ title: false, description: false })

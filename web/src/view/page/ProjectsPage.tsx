@@ -1,5 +1,7 @@
+import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import styled from 'styled-components'
+import { AppRouteParams } from '../nav/route'
 import { Page } from './Page'
 import { ProjectCard } from './ProjectCard'
 
@@ -11,7 +13,9 @@ const ProjectsContainer = styled.div`
   margin: 40px;
 `
 
-export function SearchPage() {
+interface ProfilePageProps extends RouteComponentProps, AppRouteParams {}
+
+export function ProjectsPage(props: ProfilePageProps) {
   return (
     <Page>
       <ProjectsContainer>
