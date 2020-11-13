@@ -10,13 +10,13 @@ import { style } from '../style/styled'
 import { fetchUser } from './auth/fetchUser'
 import { UserContext, UserCtx } from './auth/user'
 import { Route } from './nav/route'
+import { CreateProjectPage } from './page/CreateProjectPage'
 import { HomePage } from './page/HomePage'
 import { LecturesPage } from './page/LecturesPage'
 import { PlaygroundPage } from './page/PlaygroundPage'
 import { ProfilePage } from './page/ProfilePage'
 import { ProjectPost } from './page/ProjectPost'
 import { ProjectsPage } from './page/ProjectsPage'
-import { SearchPage } from './page/SearchPage'
 
 const Styletron = require('styletron-engine-monolithic')
 
@@ -59,11 +59,11 @@ export function AppBody() {
         <LecturesPage path={Route.LECTURES} />
         <ProfilePage path={Route.PROFILE} />
         <ProjectsPage path={Route.PROJECTS} />
-        {/* <ForumPage path={Route.FORUM_PAGE} /> */}
+        <CreateProjectPage path={Route.CREATEPROJECT} />
         <ProjectPost path={Route.PROJECT_POST} />
         <PlaygroundPage path={Route.PLAYGROUND} />
         <PlaygroundPage path={Route.PLAYGROUND_APP} />
-        <SearchPage path={Route.SEARCHPAGE} />
+        {/* <SearchPage path={Route.SEARCHPAGE} /> */}
       </Router>
       <Footer>
         <FooterText>© 2020 John Rothfels</FooterText>

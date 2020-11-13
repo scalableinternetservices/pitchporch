@@ -6,7 +6,7 @@ import { Input } from '../../style/input'
 import { toastErr } from '../toast/toast'
 import { Page } from './Page'
 
-export function ForumPage() {
+export function CreateProjectPage() {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [err, setError] = useState({ title: false, description: false })
