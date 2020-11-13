@@ -24,6 +24,46 @@ export interface FetchUserContext {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchProjects
+// ====================================================
+
+export interface FetchProjects_projects {
+  __typename: "Project";
+  id: number;
+}
+
+export interface FetchProjects {
+  projects: FetchProjects_projects[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: FetchProject
+// ====================================================
+
+export interface FetchProject_project {
+  __typename: "Project";
+  id: number;
+}
+
+export interface FetchProject {
+  project: FetchProject_project | null;
+}
+
+export interface FetchProjectVariables {
+  projectId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchUsers
 // ====================================================
 
@@ -229,6 +269,20 @@ export interface NextSurveyQuestion {
 
 export interface NextSurveyQuestionVariables {
   surveyId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: Project
+// ====================================================
+
+export interface Project {
+  __typename: "Project";
+  id: number;
 }
 
 /* tslint:disable */

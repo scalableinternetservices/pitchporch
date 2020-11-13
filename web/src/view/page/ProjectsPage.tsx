@@ -1,18 +1,22 @@
+import { useQuery } from '@apollo/client'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { ColorName, Colors } from '../../../../common/src/colors'
+import { FetchProjects } from '../../graphql/query.gen'
 import { H2 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
 import { style } from '../../style/styled'
 import { BodyText } from '../../style/text'
 import { Link } from '../nav/Link'
 import { AppRouteParams, getPlaygroundPath } from '../nav/route'
+import { fetchProjects } from './fetchProjects'
 import { Page } from './Page'
 
 interface ProjectsPageProps extends RouteComponentProps, AppRouteParams {}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ProjectsPage(props: ProjectsPageProps) {
+  const { loading, data } = useQuery<FetchProjects>(fetchProjects)
   return (
     <Page>
       <Section>
