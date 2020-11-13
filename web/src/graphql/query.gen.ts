@@ -24,6 +24,50 @@ export interface FetchUserContext {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchProjects
+// ====================================================
+
+export interface FetchProjects_projects {
+  __typename: "Project";
+  id: number;
+  title: string;
+  description: string;
+}
+
+export interface FetchProjects {
+  projects: FetchProjects_projects[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: FetchProject
+// ====================================================
+
+export interface FetchProject_project {
+  __typename: "Project";
+  id: number;
+  title: string;
+  description: string;
+}
+
+export interface FetchProject {
+  project: FetchProject_project | null;
+}
+
+export interface FetchProjectVariables {
+  projectId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchUsers
 // ====================================================
 
@@ -60,6 +104,23 @@ export interface FetchUser {
 
 export interface FetchUserVariables {
   userId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: AddUserToProject
+// ====================================================
+
+export interface AddUserToProject {
+  addUserToProject: boolean;
+}
+
+export interface AddUserToProjectVariables {
+  input: AddUserToProjectInput;
 }
 
 /* tslint:disable */
@@ -237,6 +298,22 @@ export interface NextSurveyQuestionVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: Project
+// ====================================================
+
+export interface Project {
+  __typename: "Project";
+  id: number;
+  title: string;
+  description: string;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: User
 // ====================================================
 
@@ -312,6 +389,11 @@ export interface SurveyQuestion {
 export enum UserType {
   ADMIN = "ADMIN",
   USER = "USER",
+}
+
+export interface AddUserToProjectInput {
+  projectId: number;
+  userId: number;
 }
 
 export interface SurveyInput {

@@ -27,15 +27,23 @@ const Creator = styled.div`
   font-size: 16px;
 `
 
+const Join = styled.div`
+  cursor: pointer;
+  width: 150px;
+  color: white;
+  background: blue;
+`
+
 interface ProjectCardProps {}
 
 export function ProjectCard(props: ProjectCardProps) {
   return (
-    <Container>
+    <>
       <Title>Project Title</Title>
       <Date>Date published 10/20/2020</Date>
       <Description>project description here</Description>
       <Creator>Created By: ajsldfjaldfj</Creator>
-    </Container>
+      {/* <Join onClick={() => handleSubmit(props.projectId)}>Join Project</Join> */}
+    </>
   )
 }

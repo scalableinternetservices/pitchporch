@@ -315,6 +315,7 @@ export type UserResolvers<
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   projectsCreated?: Resolver<Array<Maybe<ResolversTypes['Project']>>, ParentType, ContextType>
+  projectsPartOf?: Resolver<Array<Maybe<ResolversTypes['Project']>>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
@@ -326,6 +327,7 @@ export type ProjectResolvers<
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>
+  usersInProject?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
