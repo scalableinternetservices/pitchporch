@@ -1,84 +1,71 @@
-import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
-import { Button, Form, Input, TextArea } from 'semantic-ui-react'
-import { AppRouteParams } from '../nav/route'
+import { useEffect, useState } from 'react'
+import { check } from '../../../../common/src/util'
+import { Button } from '../../style/button'
+import { Input } from '../../style/input'
+import { toastErr } from '../toast/toast'
 import { Page } from './Page'
 
-interface HomePageProps extends RouteComponentProps, AppRouteParams {}
+export function ForumPage() {
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [err, setError] = useState({ title: false, description: false })
 
-// const genderOptions = [
-//   { key: 'm', text: 'Male', value: 'male' },
-//   { key: 'f', text: 'Female', value: 'female' },
-//   { key: 'o', text: 'Other', value: 'other' },
-// ]
+  // reset error when title/description change
+  useEffect(() => setError({ ...err, title: false }), [title])
+  useEffect(() => setError({ ...err, description: false }), [description])
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function ForumPage(props: HomePageProps) {
+  function createProject() {
+    if (!validateInput(title, description, setError)) {
+      toastErr('invalid title/description')
+      return
+    }
+
+    fetch('/createProject', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, description }),
+    })
+      .then(res => {
+        check(res.ok, 'response status ' + res.status)
+        return res.text()
+      })
+      .then(() => window.location.replace('/app/forumpage'))
+      .catch(err => {
+        toastErr(err.toString())
+        setError({ title: true, description: true })
+      })
+  }
+
   return (
     <Page>
-      <Form>
-        <Form.Group widths="equal">
-          <Form.Field
-            id="form-input-control-first-name"
-            control={Input}
-            label="Project Name"
-            placeholder="Enter Project Name"
-          />
-          <Form.Field
-            id="form-input-control-last-name"
-            control={Input}
-            label="Tech Stack"
-            placeholder="Enter Tech Stack"
-          />
-          {/* <Form.Field
-            control={Select}
-            options={genderOptions}
-            label={{ children: 'Gender', htmlFor: 'form-select-control-gender' }}
-            placeholder="Gender"
-            search
-            searchInput={{ id: 'form-select-control-gender' }}
-          /> */}
-        </Form.Group>
-        <Form.Field
-          id="form-textarea-control-opinion"
-          control={TextArea}
-          label="Description"
-          placeholder="Enter description"
-        />
-        <Form.Field
-          id="form-input-control-error-email"
-          control={Input}
-          label="Email"
-          placeholder="Enter email"
-          error={{
-            content: 'Please enter a valid email address',
-            pointing: 'below',
-          }}
-        />
-        <Form.Field id="form-button-control-public" control={Button} content="Confirm" />
-      </Form>
+      <div className="mt3">
+        <label className="db fw4 lh-copy f6" htmlFor="title">
+          Title
+        </label>
+        <Input $hasError={err.title} $onChange={setTitle} $onSubmit={createProject} name="title" type="text" />
+      </div>
+      <div className="mt3">
+        <label className="db fw4 lh-copy f6" htmlFor="description">
+          Description
+        </label>
+        <Input $hasError={err.description} $onChange={setDescription} $onSubmit={createProject} name="description" />
+      </div>
+      <div className="mt3">
+        <Button onClick={createProject}>Create Project</Button>
+      </div>
     </Page>
   )
 }
 
-// const Hero = style('div', 'mb4 w-100 ba b--mid-gray br2 pa3 tc', {
-//   borderLeftColor: Colors.lemon + '!important',
-//   borderRightColor: Colors.lemon + '!important',
-//   borderLeftWidth: '4px',
-//   borderRightWidth: '4px',
-// })
-
-// const Content = style('div', 'flex-l')
-
-// const LContent = style('div', 'flex-grow-0 w-70-l mr4-l')
-
-// const RContent = style('div', 'flex-grow-0  w-30-l')
-
-// const Section = style('div', 'mb4 mid-gray ba b--mid-gray br2 pa3', (p: { $color?: ColorName }) => ({
-//   borderLeftColor: Colors[p.$color || 'lemon'] + '!important',
-//   borderLeftWidth: '3px',
-// }))
-
-// const TD = style('td', 'pa1', p => ({
-//   color: p.$theme.textColor(),
-// }))
+function validateInput(
+  title: string,
+  description: string,
+  setError: React.Dispatch<React.SetStateAction<{ title: boolean; description: boolean }>>
+) {
+  const validTitle = Boolean(title)
+  const validDescription = Boolean(description)
+  console.log('valid', validTitle, validDescription)
+  setError({ title: !validTitle, description: !validDescription })
+  return validTitle && validDescription
+}
