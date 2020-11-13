@@ -17,7 +17,7 @@ export function Login() {
   // reset error when email/password change
   useEffect(() => setError({ ...err, email: !validateEmail(email) }), [email])
   useEffect(() => setError({ ...err, password: false }), [password])
-
+  console.log(user)
   function login() {
     if (!validate(email, password, setError)) {
       toastErr('invalid email/password')
