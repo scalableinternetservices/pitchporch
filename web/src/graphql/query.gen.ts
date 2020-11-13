@@ -30,6 +30,7 @@ export interface FetchUserContext {
 export interface FetchProjects_projects {
   __typename: "Project";
   id: number;
+  description: string;
 }
 
 export interface FetchProjects {
@@ -48,6 +49,7 @@ export interface FetchProjects {
 export interface FetchProject_project {
   __typename: "Project";
   id: number;
+  description: string;
 }
 
 export interface FetchProject {
@@ -283,6 +285,7 @@ export interface NextSurveyQuestionVariables {
 export interface Project {
   __typename: "Project";
   id: number;
+  description: string;
 }
 
 /* tslint:disable */
