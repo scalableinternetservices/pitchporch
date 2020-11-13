@@ -22,6 +22,7 @@ type Query {
   survey(surveyId: Int!): Survey
   user(userId: Int!): User
   users: [User!]!
+  project(projectId: Int!): Project
   projects: [Project!]!
 }
 
@@ -36,6 +37,7 @@ type Mutation {
   nextSurveyQuestion(surveyId: Int!): Survey
 
   # addProject(title: String!, description: String!, createdBy: User!): Project
+  addProject(title: String!, description: String!, createdBy: Int!): Project
 }
 
 type Subscription {

@@ -1,5 +1,5 @@
 require('honeycomb-beeline')({
-  writeKey: process.env.HONEYCOMB_KEY || 'd29d5f5ec24178320dae437383480737',
+  writeKey: process.env.HONEYCOMB_KEY || '7313be69cc4f149f89ec7b450471d40a',
   dataset: process.env.APP_NAME || 'pitchporch',
   serviceName: process.env.APPSERVER_TAG || 'local',
   enabledInstrumentations: ['express', 'mysql2', 'react-dom/server'],
@@ -20,10 +20,12 @@ import { checkEqual, Unpromise } from '../../common/src/util'
 import { Config } from './config'
 import { migrate } from './db/migrate'
 import { initORM } from './db/sql'
+import { Project } from './entities/Project'
 import { Session } from './entities/Session'
 import { User } from './entities/User'
 import { getSchema, graphqlRoot, pubsub } from './graphql/api'
 import { ConnectionManager } from './graphql/ConnectionManager'
+import { UserType } from './graphql/schema.types'
 import { expressLambdaProxy } from './lambda/handler'
 import { renderApp } from './render'
 
@@ -51,6 +53,29 @@ server.express.get('/app/*', (req, res) => {
   renderApp(req, res)
 })
 
+const SESSION_DURATION = 30 * 24 * 60 * 60 * 1000 // 30 days
+
+server.express.post(
+  '/auth/createUser',
+  asyncRoute(async (req, res) => {
+    console.log('POST /auth/createUser')
+    // create User model with data from HTTP request
+    let user = new User()
+    user.email = req.body.email
+    user.name = req.body.name
+    user.userType = UserType.User
+
+    // save the User model to the database, refresh `user` to get ID
+    user = await user.save()
+
+    const authToken = await createSession(user)
+    res
+      .status(200)
+      .cookie('authToken', authToken, { maxAge: SESSION_DURATION, path: '/', httpOnly: true, secure: Config.isProd })
+      .send('Success!')
+  })
+)
+
 server.express.post(
   '/auth/login',
   asyncRoute(async (req, res) => {
@@ -64,22 +89,27 @@ server.express.post(
       return
     }
 
-    const authToken = uuidv4()
-
     await Session.delete({ user })
 
-    const session = new Session()
-    session.authToken = authToken
-    session.user = user
-    await Session.save(session).then(s => console.log('saved session ' + s.id))
-
-    const SESSION_DURATION = 30 * 24 * 60 * 60 * 1000 // 30 days
+    const authToken = await createSession(user)
     res
       .status(200)
       .cookie('authToken', authToken, { maxAge: SESSION_DURATION, path: '/', httpOnly: true, secure: Config.isProd })
       .send('Success!')
   })
 )
+
+async function createSession(user: User): Promise<string> {
+  const authToken = uuidv4()
+
+  const session = new Session()
+  session.authToken = authToken
+  session.user = user
+  await Session.save(session).then(s => console.log('saved session ' + s.id))
+
+  return authToken
+}
+
 
 server.express.post(
   '/auth/logout',
@@ -90,6 +120,32 @@ server.express.post(
       await Session.delete({ authToken })
     }
     res.status(200).cookie('authToken', '', { maxAge: 0 }).send('Success!')
+  })
+)
+
+server.express.post(
+  '/createProject',
+  asyncRoute(async (req, res) => {
+    console.log('POST /createProject')
+    // Check the user is logged in and get their id using authToken
+    const authToken = req.cookies.authToken || req.header('x-authtoken')
+    if (authToken) {
+      const session = await Session.findOne({ where: { authToken }, relations: ['user'] })
+      if (session) {
+        // create Project model with data from HTTP request
+        let project = new Project()
+        project.title = req.body.title
+        project.description = req.body.description
+        project.createdBy = session.user
+        // save the Project model to the database
+        project = await project.save()
+        res
+        .status(200)
+        .send('Success!')
+        return
+      }
+    }
+    res.status(403).send('Forbidden')
   })
 )
 

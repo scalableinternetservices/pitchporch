@@ -1,18 +1,22 @@
+// import { getApolloClient } from '../../graphql/apolloClient'
+import { useQuery } from '@apollo/client';
 import { RouteComponentProps } from '@reach/router';
 import * as React from 'react';
+import { useContext } from 'react';
 import { ColorName, Colors } from '../../../../common/src/colors';
+import {
+  FetchUser,
+  FetchUserVariables
+} from '../../graphql/query.gen';
 import { H2 } from '../../style/header';
 import { Spacer } from '../../style/spacer';
 import { style } from '../../style/styled';
 import { BodyText, IntroText } from '../../style/text';
+import { UserContext } from '../auth/user';
 import { Link } from '../nav/Link';
 import { AppRouteParams } from '../nav/route';
+import { fetchUser } from './fetchUsers';
 import { Page } from './Page';
-// import { getApolloClient } from '../../graphql/apolloClient'
-// import {
-//   FetchUserContext_self,
-//   FetchUserContext
-// } from '../../graphql/query.gen'
 
 interface ProfilePageProps extends RouteComponentProps, AppRouteParams {}
 
@@ -20,6 +24,24 @@ interface ProfilePageProps extends RouteComponentProps, AppRouteParams {}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ProfilePage(props: ProfilePageProps) {
+  const { user } = useContext(UserContext)
+  if (!user)
+    return <div>no user</div>
+  var userId = user.id
+  const { loading, data } = useQuery<FetchUser, FetchUserVariables>(fetchUser, {
+    variables: { userId },
+  })
+
+  // const { loading, data } = useQuery<FetchUser, FetchUserVariables>(fetchUser, {
+  //   variables: { userId },
+  // })
+  console.log(loading);
+  if (!data)
+    return <div>no user</div>
+  if (!data.user)
+    return <div>no user</div>
+  console.log(data)
+  //console.log(window.document.cookie)
   return (
     <Page>
       <Section>
@@ -31,8 +53,8 @@ export function ProfilePage(props: ProfilePageProps) {
         <Table>
           <tbody>
             <UserInfo
-              name="Nikhil Srikumar"
-              email="nikhil.srikumar@gmail.com"
+              name={data.user.name}
+              email={data.user.email}
               href="#"
               description="What is up with it"
               socialMedia={[

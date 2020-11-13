@@ -6,9 +6,33 @@
 export type UserScript = () => Promise<any>
 
 export async function userScript() {
-  await fetch('https://pitchporch.cloudcity.computer/')
-  await fetch('https://pitchporch.cloudcity.computer/')
-  await fetch('https://pitchporch.cloudcity.computer/')
+  // Sign up
+  await fetch('http://localhost:3000/auth/createUser', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: 'steph@warriors.com', name: 'Stephen Curry' })
+  });
+  // Log in
+  // TODO: retrieve authtoken from response?
+  await fetch('http://localhost:3000/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: 'steph@warriors.com', password: 'password' })
+  });
+  // Create Project
+  await fetch('http://localhost:3000/createProject', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+      // ,
+      // 'x-authtoken': 'aa347a6a-9a50-441d-b346-ee6352784087'
+    },
+    body: JSON.stringify({ title: 'Pied Piper', description: 'A compression software company that stores your data across a network of devices.' })
+  });
 }
 
 // set this is you require authenticated requests
