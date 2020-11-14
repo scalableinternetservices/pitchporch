@@ -1,7 +1,10 @@
+// import { useQuery } from '@apollo/client'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import styled from 'styled-components'
+// import { FetchProjects } from '../../graphql/query.gen'
 import { AppRouteParams } from '../nav/route'
+// import { fetchProjects } from './fetchProjects'
 import { Page } from './Page'
 import { ProjectCard } from './ProjectCard'
 
@@ -16,6 +19,9 @@ const ProjectsContainer = styled.div`
 interface ProfilePageProps extends RouteComponentProps, AppRouteParams {}
 
 export function ProjectsPage(props: ProfilePageProps) {
+  // const { loading, data } = useQuery<FetchProjects>(fetchProjects)
+  // console.log(data)
+
   return (
     <Page>
       <ProjectsContainer>
