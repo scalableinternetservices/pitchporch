@@ -30,9 +30,14 @@ const Creator = styled.div`
   font-size: 16px;
 `
 
-interface ProjectCardProps {}
+interface ProjectCardProps {
+  title: string
+  createdBy: string
+  description: string
+  usersInProject: any
+}
 
-export function ProjectCard(props: ProjectCardProps) {
+export default function ProjectCard(props: ProjectCardProps) {
   // const { loading, data } = useQuery<FetchProjects>(fetchProjects)
   // const { project } = useContext(ProjectContext)
   // const projectId = project.id
@@ -40,10 +45,16 @@ export function ProjectCard(props: ProjectCardProps) {
   console.log(data)
   return (
     <Container>
-      <Title>Project Title</Title>
+      <Title>{props.title}</Title>
       <Date>Date published 10/20/2020</Date>
-      <Description>{data?.project?.description}</Description>
-      <Creator>Created By: ajsldfjaldfj</Creator>
+      <Description>Description: {props.description}</Description>
+      <Creator>Created By: {props.createdBy}</Creator>
+      <div>
+        Users in Project:
+        {props.usersInProject.map((userObj : any) =>
+          <Creator>{userObj.name}</Creator>
+        )}
+      </div>
     </Container>
   )
 }
