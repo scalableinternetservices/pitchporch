@@ -1,5 +1,11 @@
-import * as React from 'react'
-import styled from 'styled-components'
+import * as React from 'react';
+import { useContext } from 'react';
+import styled from 'styled-components';
+import { getApolloClient } from '../../graphql/apolloClient';
+import { UserContext } from '../auth/user';
+import { handleError } from '../toast/error';
+import { toast } from '../toast/toast';
+import { addUserToProject } from './mutateProject';
 
 const Container = styled.div`
   display: flex;
@@ -34,16 +40,32 @@ const Join = styled.div`
   background: blue;
 `
 
-interface ProjectCardProps {}
+interface ProjectCardProps {
+  projectId: number
+}
 
 export function ProjectCard(props: ProjectCardProps) {
+  const { user } = useContext(UserContext)
+  function handleJoin(projectId: number) {
+    if (!user) {
+      alert("No User!")
+    } else {
+      addUserToProject(getApolloClient(), { projectId: projectId, userId: user.id })
+      .then(() => {
+        toast('submitted!')
+      })
+      .catch(err => {
+        handleError(err)
+      })
+    }
+  }
   return (
-    <>
+    <Container>
       <Title>Project Title</Title>
       <Date>Date published 10/20/2020</Date>
       <Description>project description here</Description>
       <Creator>Created By: ajsldfjaldfj</Creator>
-      {/* <Join onClick={() => handleSubmit(props.projectId)}>Join Project</Join> */}
-    </>
+      <Join onClick={() => handleJoin(props.projectId)}>Join Project</Join>
+    </Container>
   )
 }
