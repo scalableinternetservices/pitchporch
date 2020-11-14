@@ -1,8 +1,5 @@
-import { useQuery } from '@apollo/client'
 import * as React from 'react'
 import styled from 'styled-components'
-import { FetchProject, FetchProjectVariables } from '../../graphql/query.gen'
-import { fetchProject } from './fetchProjects'
 
 const Container = styled.div`
   display: flex;
@@ -38,11 +35,6 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard(props: ProjectCardProps) {
-  // const { loading, data } = useQuery<FetchProjects>(fetchProjects)
-  // const { project } = useContext(ProjectContext)
-  // const projectId = project.id
-  const { data } = useQuery<FetchProject, FetchProjectVariables>(fetchProject)
-  console.log(data)
   return (
     <Container>
       <Title>{props.title}</Title>
