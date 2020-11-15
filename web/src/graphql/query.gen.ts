@@ -24,6 +24,74 @@ export interface FetchUserContext {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchProjects
+// ====================================================
+
+export interface FetchProjects_projects_createdBy {
+  __typename: "User";
+  name: string;
+}
+
+export interface FetchProjects_projects_usersInProject {
+  __typename: "User";
+  name: string;
+}
+
+export interface FetchProjects_projects {
+  __typename: "Project";
+  id: number;
+  title: string;
+  createdBy: FetchProjects_projects_createdBy;
+  description: string;
+  usersInProject: (FetchProjects_projects_usersInProject | null)[];
+}
+
+export interface FetchProjects {
+  projects: FetchProjects_projects[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: FetchProject
+// ====================================================
+
+export interface FetchProject_project_createdBy {
+  __typename: "User";
+  name: string;
+}
+
+export interface FetchProject_project_usersInProject {
+  __typename: "User";
+  name: string;
+}
+
+export interface FetchProject_project {
+  __typename: "Project";
+  id: number;
+  title: string;
+  createdBy: FetchProject_project_createdBy;
+  description: string;
+  usersInProject: (FetchProject_project_usersInProject | null)[];
+}
+
+export interface FetchProject {
+  project: FetchProject_project | null;
+}
+
+export interface FetchProjectVariables {
+  projectId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchUsers
 // ====================================================
 
@@ -60,6 +128,42 @@ export interface FetchUser {
 
 export interface FetchUserVariables {
   userId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: AddUserToProject
+// ====================================================
+
+export interface AddUserToProject_addUserToProject_createdBy {
+  __typename: "User";
+  name: string;
+}
+
+export interface AddUserToProject_addUserToProject_usersInProject {
+  __typename: "User";
+  name: string;
+}
+
+export interface AddUserToProject_addUserToProject {
+  __typename: "Project";
+  id: number;
+  title: string;
+  createdBy: AddUserToProject_addUserToProject_createdBy;
+  description: string;
+  usersInProject: (AddUserToProject_addUserToProject_usersInProject | null)[];
+}
+
+export interface AddUserToProject {
+  addUserToProject: AddUserToProject_addUserToProject;
+}
+
+export interface AddUserToProjectVariables {
+  input: AddUserToProjectInput;
 }
 
 /* tslint:disable */
@@ -237,6 +341,34 @@ export interface NextSurveyQuestionVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL fragment: Project
+// ====================================================
+
+export interface Project_createdBy {
+  __typename: "User";
+  name: string;
+}
+
+export interface Project_usersInProject {
+  __typename: "User";
+  name: string;
+}
+
+export interface Project {
+  __typename: "Project";
+  id: number;
+  title: string;
+  createdBy: Project_createdBy;
+  description: string;
+  usersInProject: (Project_usersInProject | null)[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: User
 // ====================================================
 
@@ -312,6 +444,11 @@ export interface SurveyQuestion {
 export enum UserType {
   ADMIN = "ADMIN",
   USER = "USER",
+}
+
+export interface AddUserToProjectInput {
+  projectId: number;
+  userId: number;
 }
 
 export interface SurveyInput {

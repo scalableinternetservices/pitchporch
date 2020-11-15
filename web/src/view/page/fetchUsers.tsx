@@ -8,8 +8,6 @@ export const fragmentUser = gql`
   }
 `
 
-
-
 export const fetchUsers = gql`
   query FetchUsers {
     users {

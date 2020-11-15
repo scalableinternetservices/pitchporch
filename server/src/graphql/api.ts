@@ -34,6 +34,16 @@ export const graphqlRoot: Resolvers<Context> = {
     projects: () => Project.find()
   },
   Mutation: {
+    addUserToProject: async (_, { input }, ctx) => {
+      const { projectId, userId } = input
+      const project = check(await Project.findOne({ where: { id: projectId } }))
+      const user = check((await User.findOne({ where: { id: userId } })))
+      if (!project.usersInProject.includes(user))
+        project.usersInProject.push(user)
+      await project.save()
+      ctx.pubsub.publish('PROJECT_UPDATE_' + project.id, project)
+      return project
+    },
     answerSurvey: async (_, { input }, ctx) => {
       const { answer, questionId } = input
       const question = check(await SurveyQuestion.findOne({ where: { id: questionId }, relations: ['survey'] }))
