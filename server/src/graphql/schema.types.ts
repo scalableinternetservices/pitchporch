@@ -37,7 +37,7 @@ export interface QueryProjectArgs {
 
 export interface Mutation {
   __typename?: 'Mutation'
-  addUserToProject: Scalars['Boolean']
+  addUserToProject: Project
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
   addProject?: Maybe<Project>
@@ -268,7 +268,7 @@ export type MutationResolvers<
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   addUserToProject?: Resolver<
-    ResolversTypes['Boolean'],
+    ResolversTypes['Project'],
     ParentType,
     ContextType,
     RequireFields<MutationAddUserToProjectArgs, 'input'>

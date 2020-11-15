@@ -4,11 +4,15 @@ export const fragmentProject = gql`
   fragment Project on Project {
     id
     title
+    createdBy {
+      name
+    }
     description
+    usersInProject {
+      name
+    }
   }
 `
-
-
 
 export const fetchProjects = gql`
   query FetchProjects {

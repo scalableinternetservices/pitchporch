@@ -28,7 +28,7 @@ type Query {
 
 type Mutation {
   # Add user to project
-  addUserToProject(input: AddUserToProjectInput!): Boolean!
+  addUserToProject(input: AddUserToProjectInput!): Project!
 
   # Records an answer to a survey question presented in class.
   answerSurvey(input: SurveyInput!): Boolean!

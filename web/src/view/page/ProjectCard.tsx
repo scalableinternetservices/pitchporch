@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { getApolloClient } from '../../graphql/apolloClient';
 import { UserContext } from '../auth/user';
 import { handleError } from '../toast/error';
-import { toast } from '../toast/toast';
 import { addUserToProject } from './mutateProject';
 
 const Container = styled.div`
@@ -39,33 +38,52 @@ const Join = styled.div`
   color: white;
   background: blue;
 `
-
-interface ProjectCardProps {
-  projectId: number
+interface ProjectCardPropsAndState {
+  id: number
+  title: string
+  createdBy: string
+  description: string
+  usersInProject: any
 }
 
-export function ProjectCard(props: ProjectCardProps) {
+export default function ProjectCard(props: ProjectCardPropsAndState) {
+  const [project, setProject] = useState<ProjectCardPropsAndState>(props);
   const { user } = useContext(UserContext)
   function handleJoin(projectId: number) {
     if (!user) {
       alert("No User!")
     } else {
       addUserToProject(getApolloClient(), { projectId: projectId, userId: user.id })
-      .then(() => {
-        toast('submitted!')
+      .then(( data : any ) => {
+        const newProj : ProjectCardPropsAndState = {
+          id: data.data.addUserToProject.id,
+          title: data.data.addUserToProject.title,
+          createdBy: data.data.addUserToProject.createdBy.name,
+          description: data.data.addUserToProject.description,
+          usersInProject: data.data.addUserToProject.usersInProject
+        }
+        setProject(newProj)
       })
       .catch(err => {
         handleError(err)
+        alert("WRONG")
       })
     }
   }
+
   return (
     <Container>
-      <Title>Project Title</Title>
+      <Title>{project.title}</Title>
       <Date>Date published 10/20/2020</Date>
-      <Description>project description here</Description>
-      <Creator>Created By: ajsldfjaldfj</Creator>
-      <Join onClick={() => handleJoin(props.projectId)}>Join Project</Join>
+      <Join onClick={() => handleJoin(project.id)}>Join Project</Join>
+      <Description>Description: {project.description}</Description>
+      <Creator>Created By: {project.createdBy}</Creator>
+      <div>
+        Users in Project:
+        {project.usersInProject.map((userObj : any, index: number) =>
+          <Creator key={index}>{userObj.name}</Creator>
+        )}
+      </div>
     </Container>
   )
 }

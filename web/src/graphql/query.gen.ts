@@ -27,11 +27,23 @@ export interface FetchUserContext {
 // GraphQL query operation: FetchProjects
 // ====================================================
 
+export interface FetchProjects_projects_createdBy {
+  __typename: "User";
+  name: string;
+}
+
+export interface FetchProjects_projects_usersInProject {
+  __typename: "User";
+  name: string;
+}
+
 export interface FetchProjects_projects {
   __typename: "Project";
   id: number;
   title: string;
+  createdBy: FetchProjects_projects_createdBy;
   description: string;
+  usersInProject: (FetchProjects_projects_usersInProject | null)[];
 }
 
 export interface FetchProjects {
@@ -47,11 +59,23 @@ export interface FetchProjects {
 // GraphQL query operation: FetchProject
 // ====================================================
 
+export interface FetchProject_project_createdBy {
+  __typename: "User";
+  name: string;
+}
+
+export interface FetchProject_project_usersInProject {
+  __typename: "User";
+  name: string;
+}
+
 export interface FetchProject_project {
   __typename: "Project";
   id: number;
   title: string;
+  createdBy: FetchProject_project_createdBy;
   description: string;
+  usersInProject: (FetchProject_project_usersInProject | null)[];
 }
 
 export interface FetchProject {
@@ -115,8 +139,27 @@ export interface FetchUserVariables {
 // GraphQL mutation operation: AddUserToProject
 // ====================================================
 
+export interface AddUserToProject_addUserToProject_createdBy {
+  __typename: "User";
+  name: string;
+}
+
+export interface AddUserToProject_addUserToProject_usersInProject {
+  __typename: "User";
+  name: string;
+}
+
+export interface AddUserToProject_addUserToProject {
+  __typename: "Project";
+  id: number;
+  title: string;
+  createdBy: AddUserToProject_addUserToProject_createdBy;
+  description: string;
+  usersInProject: (AddUserToProject_addUserToProject_usersInProject | null)[];
+}
+
 export interface AddUserToProject {
-  addUserToProject: boolean;
+  addUserToProject: AddUserToProject_addUserToProject;
 }
 
 export interface AddUserToProjectVariables {
@@ -301,11 +344,23 @@ export interface NextSurveyQuestionVariables {
 // GraphQL fragment: Project
 // ====================================================
 
+export interface Project_createdBy {
+  __typename: "User";
+  name: string;
+}
+
+export interface Project_usersInProject {
+  __typename: "User";
+  name: string;
+}
+
 export interface Project {
   __typename: "Project";
   id: number;
   title: string;
+  createdBy: Project_createdBy;
   description: string;
+  usersInProject: (Project_usersInProject | null)[];
 }
 
 /* tslint:disable */

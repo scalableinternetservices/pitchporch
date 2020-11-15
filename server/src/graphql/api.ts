@@ -38,9 +38,11 @@ export const graphqlRoot: Resolvers<Context> = {
       const { projectId, userId } = input
       const project = check(await Project.findOne({ where: { id: projectId } }))
       const user = check((await User.findOne({ where: { id: userId } })))
-      project.usersInProject.push(user)
+      if (!project.usersInProject.includes(user))
+        project.usersInProject.push(user)
+      await project.save()
       ctx.pubsub.publish('PROJECT_UPDATE_' + project.id, project)
-      return true
+      return project
     },
     answerSurvey: async (_, { input }, ctx) => {
       const { answer, questionId } = input
