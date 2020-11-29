@@ -11,11 +11,11 @@ import { addToastListener, removeToastListener, Toast, ToastType } from '../toas
 import { link } from './Link'
 import { getLoginPath, getPath, getSignupPath, getSurveyPath, Route } from './route'
 
-const title = {
-  name: 'CS188',
-  path: getPath(Route.HOME),
-  title: true,
-}
+// const title = {
+//   name: 'CS188',
+//   path: getPath(Route.HOME),
+//   title: true,
+// }
 
 const otherTabs = [
   {
@@ -68,7 +68,7 @@ export function NavBar() {
         {/* mount point for NavMenu */}
         <div id="nav-modal" />
         <Nav>
-          <NavItem {...title} />
+          {/* <NavItem {...title} /> */}
 
           {/* push tab to the right on small screens */}
           {isSmall && <div style={{ flex: 1 }} />}
