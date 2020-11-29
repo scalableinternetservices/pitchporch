@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Login } from '../auth/Login'
 import { Signup } from '../auth/Signup'
 import { AppRouteParams, getPath, PlaygroundApp, Route } from '../nav/route'
-import { Surveys } from '../playground/Surveys'
+// import { Surveys } from '../playground/Surveys'
 import { Page } from './Page'
 export function getSignupPath() {
   return getPath(Route.PLAYGROUND_APP, { app: PlaygroundApp.SIGNUP })
@@ -20,8 +20,8 @@ function getPlaygroundApp(app?: PlaygroundApp) {
     return <div>choose an app</div>
   }
   switch (app) {
-    case PlaygroundApp.SURVEYS:
-      return <Surveys />
+    // case PlaygroundApp.SURVEYS:
+    //   return <Surveys />
     case PlaygroundApp.LOGIN:
       return <Login />
     case PlaygroundApp.SIGNUP:
