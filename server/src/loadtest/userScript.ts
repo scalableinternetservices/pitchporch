@@ -3,36 +3,64 @@
  *
  * Each user arriving at the site during the load test will execute the user script.
  */
+
+var uuid = require("uuid");
+
 export type UserScript = () => Promise<any>
 
 export async function userScript() {
+
+  var authToken = ''
+  const emailSuffixUnique = uuid.v4();
+
   // Sign up
   await fetch('http://localhost:3000/auth/createUser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email: 'steph@warriors.com', name: 'Stephen Curry' })
-  });
+    body: JSON.stringify({ email: 'steph-' + emailSuffixUnique + '@warriors.com', name: 'Stephen Curry' })
+  })
+  .then(function(response) {
+    console.log('HTTP POST: /auth/createUser');
+    console.log('Response Code:', response.status)
+  });;
+
   // Log in
-  // TODO: retrieve authtoken from response?
   await fetch('http://localhost:3000/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email: 'steph@warriors.com', password: 'password' })
+    body: JSON.stringify({ email: 'steph-' + emailSuffixUnique + '@warriors.com', password: 'password' })
+  })
+  .then(function(response) {
+    var respCookies = response.headers.get('Set-Cookie')
+    if (respCookies != null) {
+      authToken = respCookies.split(';')[0].substr(10);
+    }
+    console.log('HTTP POST: /auth/login');
+    console.log('Response Code:', response.status)
   });
+
   // Create Project
   await fetch('http://localhost:3000/createProject', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
-      // ,
-      // 'x-authtoken': 'aa347a6a-9a50-441d-b346-ee6352784087'
+      'Content-Type': 'application/json',
+      'x-authtoken': authToken
     },
     body: JSON.stringify({ title: 'Pied Piper', description: 'A compression software company that stores your data across a network of devices.' })
+  })
+  .then(function(response) {
+    console.log('HTTP POST: /createProject');
+    console.log('Response Code:', response.status)
   });
+
+  // TODO: Join a Project (apolloclient instead of fetch?, talk to sarthak)
+  // TODO: send authToken?
+
+  // TODO: add any other routes?
 }
 
 // set this is you require authenticated requests
