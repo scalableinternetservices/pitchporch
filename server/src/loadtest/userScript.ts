@@ -5,7 +5,12 @@
  */
 
 var uuid = require("uuid");
+// import { getApolloClient } from '../../../web/src/graphql/apolloClient';
+// import { addUserToProject } from '../../../web/src/view/page/mutateProject';
+// import { handleError } from '../../../web/src/view/toast/error';
 
+// var a = getApolloClient;
+// var b =  addUserToProject;
 export type UserScript = () => Promise<any>
 
 export async function userScript() {
@@ -57,8 +62,24 @@ export async function userScript() {
     console.log('Response Code:', response.status)
   });
 
-  // TODO: Join a Project (apolloclient instead of fetch?, talk to sarthak)
-  // TODO: send authToken?
+  // TODO: Join a Project (apolloclient instead of fetch?, talk to sarthak), send authToken/authenticate somehow
+  // TODO: Figure out if I can get project id and use id to pass this function
+  // Another option: try graphql mutation with fetch if have required parameters: https://gist.github.com/yusinto/30bba51b6f903c1b67e0383f4a288269
+  // addUserToProject(getApolloClient(), { projectId: projectId, userId: user.id })
+  // .then(( data : any ) => {
+  //   const newProj : ProjectCardPropsAndState = {
+  //     id: data.data.addUserToProject.id,
+  //     title: data.data.addUserToProject.title,
+  //     createdBy: data.data.addUserToProject.createdBy.name,
+  //     description: data.data.addUserToProject.description,
+  //     usersInProject: data.data.addUserToProject.usersInProject
+  //   }
+  //   setProject(newProj)
+  // })
+  // .catch(err => {
+  //   handleError(err)
+  //   alert("WRONG")
+  // })
 
   // TODO: add any other routes?
 }
