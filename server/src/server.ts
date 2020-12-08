@@ -72,7 +72,7 @@ server.express.post(
     res
       .status(200)
       .cookie('authToken', authToken, { maxAge: SESSION_DURATION, path: '/', httpOnly: true, secure: Config.isProd })
-      .send('Success!')
+      .json({ userId: user.id.toString()})
   })
 )
 
@@ -141,7 +141,7 @@ server.express.post(
         project = await project.save()
         res
         .status(200)
-        .send('Success!')
+        .json({ projectId: project.id.toString()})
         return
       }
     }
