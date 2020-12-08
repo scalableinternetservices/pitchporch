@@ -11,8 +11,6 @@ import { fetchUser } from './auth/fetchUser'
 import { UserContext, UserCtx } from './auth/user'
 import { Route } from './nav/route'
 import { CreateProjectPage } from './page/CreateProjectPage'
-import { HomePage } from './page/HomePage'
-import { LecturesPage } from './page/LecturesPage'
 import { PlaygroundPage } from './page/PlaygroundPage'
 import { ProfilePage } from './page/ProfilePage'
 import { ProjectPost } from './page/ProjectPost'
@@ -54,9 +52,9 @@ export function AppBody() {
     <>
       <Router className={bodyClass}>
         <Redirect noThrow from="app" to="index" />
-        <Redirect noThrow from="app/playground" to="surveys" />
-        <HomePage path={Route.HOME} />
-        <LecturesPage path={Route.LECTURES} />
+        {/* <Redirect noThrow from="app/playground" to="surveys" /> */}
+        {/* <HomePage path={Route.HOME} /> */}
+        {/* <LecturesPage path={Route.LECTURES} /> */}
         <ProfilePage path={Route.PROFILE} />
         <ProjectsPage path={Route.PROJECTS} />
         <CreateProjectPage path={Route.CREATEPROJECT} />
