@@ -8,7 +8,7 @@ export enum Route {
   // HOME = 'app/index',
   LECTURES = 'app/lectures',
   PROFILE = 'app/profile',
-  PROJECTS = 'app/projects',
+  PROJECTS = 'app/index',
   PROJECT_POST = 'app/projectpost',
   PLAYGROUND = 'app/playground',
   PLAYGROUND_APP = 'app/playground/:app',
