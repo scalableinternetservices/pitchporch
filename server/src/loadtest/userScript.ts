@@ -86,6 +86,12 @@ export async function userScript() {
     }
   });
 
+  // Load Profile Page
+  await fetch('http://localhost:3000/app/profile')
+
+  // Load All Projects Page
+  await fetch('http://localhost:3000/app/projects')
+
   // TODO: query for projects user is in (profile page)
 
   // TODO: query for users in project (all projects page)
