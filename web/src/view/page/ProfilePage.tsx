@@ -19,21 +19,14 @@ import { AppRouteParams } from '../nav/route';
 import { fetchProjects } from './fetchProjects';
 import { fetchUser } from './fetchUsers';
 import { Page } from './Page';
-
 interface ProfilePageProps extends RouteComponentProps, AppRouteParams {}
 
-function getInfo()
-{
-  const {data} = useQuery<FetchProjects>(fetchProjects)
-  if (!data)
-    return {projects: []}
-  else
-    return data
 
-}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ProfilePage(props: ProfilePageProps) {
+
+
   const { user } = useContext(UserContext)
   if (!user)
     return <div>no user</div>
@@ -41,6 +34,7 @@ export function ProfilePage(props: ProfilePageProps) {
   const { loading, data } = useQuery<FetchUser, FetchUserVariables>(fetchUser, {
     variables: { userId },
   })
+  const {data: datap} = useQuery<FetchProjects>(fetchProjects, {fetchPolicy: 'network-only'})
 
   // const { loading, data } = useQuery<FetchUser, FetchUserVariables>(fetchUser, {
   //   variables: { userId },
@@ -51,33 +45,37 @@ export function ProfilePage(props: ProfilePageProps) {
   if (!data.user)
     return <div>no user</div>
   console.log(data)
-  let p = getInfo()
+  let name = data.user.name
+  let p = datap
   let projects = null
 
-  if (p  == null)
-  {
-    console.log("no projects")
-  }
-  else
-  {
-    projects = p!.projects
-  }
-  console.log(projects)
-  let projectsIn = []
-  if (projects)
-  {
-    for (let i=0;i<projects!.length;i++)
+    if (!datap)
     {
-      for (let j = 0;j<projects[i].usersInProject.length;j++)
+      console.log("no projects")
+    }
+    else
+    {
+      projects = p!.projects
+    }
+    console.log(projects)
+    let projectsIn = []
+    if (projects)
+    {
+      for (let i=0;i<projects!.length;i++)
       {
-        let temp = projects[i].usersInProject[j]
-        if (temp && temp.name==data.user.name)
+        for (let j = 0;j<projects[i].usersInProject.length;j++)
         {
-          projectsIn.push({title: projects[i].title,href:'http://localhost:3000/app/projects'})
+          let temp = projects[i].usersInProject[j]
+          if (temp && temp.name==name)
+          {
+            projectsIn.push({title: projects[i].title,href:'http://localhost:3000/app/projects'})
+          }
         }
       }
     }
-  }
+
+
+
   console.log("here")
   //console.log(window.document.cookie)
   return (
@@ -103,6 +101,7 @@ export function ProfilePage(props: ProfilePageProps) {
     </Page>
   )
 }
+
 
 interface socialMedia {
   title: string
