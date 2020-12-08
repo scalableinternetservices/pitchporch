@@ -31,10 +31,10 @@ export class User extends BaseEntity implements GraphqlUser {
   })
   name: string
 
-  @OneToMany(() => Project, project => project.createdBy)
+  @OneToMany(() => Project, project => project.createdBy, {lazy: true})
   projectsCreated: Project[];
 
-  @ManyToMany(() => Project, project => project.usersInProject)
+  @ManyToMany(() => Project, project => project.usersInProject, {lazy: true})
   @JoinTable()
   projectsPartOf: Project[]
 }

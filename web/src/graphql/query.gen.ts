@@ -95,11 +95,17 @@ export interface FetchProjectVariables {
 // GraphQL query operation: FetchUsers
 // ====================================================
 
+export interface FetchUsers_users_projectsPartOf {
+  __typename: "Project";
+  title: string;
+}
+
 export interface FetchUsers_users {
   __typename: "User";
   id: number;
   name: string;
   email: string;
+  projectsPartOf: (FetchUsers_users_projectsPartOf | null)[];
 }
 
 export interface FetchUsers {
@@ -115,11 +121,17 @@ export interface FetchUsers {
 // GraphQL query operation: FetchUser
 // ====================================================
 
+export interface FetchUser_user_projectsPartOf {
+  __typename: "Project";
+  title: string;
+}
+
 export interface FetchUser_user {
   __typename: "User";
   id: number;
   name: string;
   email: string;
+  projectsPartOf: (FetchUser_user_projectsPartOf)[];
 }
 
 export interface FetchUser {
@@ -372,11 +384,17 @@ export interface Project {
 // GraphQL fragment: User
 // ====================================================
 
+export interface User_projectsPartOf {
+  __typename: "Project";
+  title: string;
+}
+
 export interface User {
   __typename: "User";
   id: number;
   name: string;
   email: string;
+  projectsPartOf: (User_projectsPartOf | null)[];
 }
 
 /* tslint:disable */
