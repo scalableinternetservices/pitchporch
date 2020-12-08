@@ -5,17 +5,14 @@
  */
 
 var uuid = require("uuid");
-// import { getApolloClient } from '../../../web/src/graphql/apolloClient';
-// import { addUserToProject } from '../../../web/src/view/page/mutateProject';
-// import { handleError } from '../../../web/src/view/toast/error';
 
-// var a = getApolloClient;
-// var b =  addUserToProject;
 export type UserScript = () => Promise<any>
 
 export async function userScript() {
 
   var authToken = ''
+  var userId;
+  var projectId;
   const emailSuffixUnique = uuid.v4();
 
   // Sign up
@@ -26,7 +23,9 @@ export async function userScript() {
     },
     body: JSON.stringify({ email: 'steph-' + emailSuffixUnique + '@warriors.com', name: 'Stephen Curry' })
   })
-  .then(function(response) {
+  .then(async function(response) {
+    var data = JSON.parse(await response.text())
+    userId = parseInt(data.userId)
     console.log('HTTP POST: /auth/createUser');
     console.log('Response Code:', response.status)
   });;
@@ -57,31 +56,46 @@ export async function userScript() {
     },
     body: JSON.stringify({ title: 'Pied Piper', description: 'A compression software company that stores your data across a network of devices.' })
   })
-  .then(function(response) {
+  .then(async function(response) {
+    var data = JSON.parse(await response.text())
+    projectId = parseInt(data.projectId)
     console.log('HTTP POST: /createProject');
     console.log('Response Code:', response.status)
   });
 
-  // TODO: Join a Project (apolloclient instead of fetch?, talk to sarthak), send authToken/authenticate somehow
-  // TODO: Figure out if I can get project id and use id to pass this function
-  // Another option: try graphql mutation with fetch if have required parameters: https://gist.github.com/yusinto/30bba51b6f903c1b67e0383f4a288269
-  // addUserToProject(getApolloClient(), { projectId: projectId, userId: user.id })
-  // .then(( data : any ) => {
-  //   const newProj : ProjectCardPropsAndState = {
-  //     id: data.data.addUserToProject.id,
-  //     title: data.data.addUserToProject.title,
-  //     createdBy: data.data.addUserToProject.createdBy.name,
-  //     description: data.data.addUserToProject.description,
-  //     usersInProject: data.data.addUserToProject.usersInProject
-  //   }
-  //   setProject(newProj)
-  // })
-  // .catch(err => {
-  //   handleError(err)
-  //   alert("WRONG")
-  // })
+  // Join a Project
+  await fetch('http://localhost:3000/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-authtoken': authToken
+    },
+    body: JSON.stringify({
+      query : 'mutation { addUserToProject(input: {projectId: ' + projectId + ', userId: ' + userId + '}) { id } }'
+    })
+  })
+  .then(async function(response) {
+    console.log('HTTP POST: /createProject');
+    console.log('Response Code:', response.status)
+    var data = JSON.parse(await response.text())
+    if (data.errors == undefined) {
+      console.log('Success: ', data.data)
+    }
+    else {
+      console.log('Errors: ', data.errors)
+    }
+  });
 
-  // TODO: add any other routes?
+  // TODO: query for projects user is in (profile page)
+
+  // TODO: query for users in project (all projects page)
+
+  // TODO: check slides for what i should be looking for in graphs then check graphs (with join project)
+  // TODO: rethink which actions by a user would cause scaling problems and if i should do those actions multiple times per user
+  // TODO: verify in graphs that cause at least 3 scaling problems
+
+  // TODO: add any other routes/pages?
+
 }
 
 // set this is you require authenticated requests
