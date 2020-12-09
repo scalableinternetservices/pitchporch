@@ -5,7 +5,6 @@ import * as React from 'react';
 import { useContext } from 'react';
 import { ColorName, Colors } from '../../../../common/src/colors';
 import {
-  FetchProjects,
   FetchUser,
   FetchUserVariables
 } from '../../graphql/query.gen';
@@ -16,7 +15,6 @@ import { BodyText, IntroText } from '../../style/text';
 import { UserContext } from '../auth/user';
 import { Link } from '../nav/Link';
 import { AppRouteParams } from '../nav/route';
-import { fetchProjects } from './fetchProjects';
 import { fetchUser } from './fetchUsers';
 import { Page } from './Page';
 interface ProfilePageProps extends RouteComponentProps, AppRouteParams {}
@@ -34,7 +32,7 @@ export function ProfilePage(props: ProfilePageProps) {
   const { loading, data } = useQuery<FetchUser, FetchUserVariables>(fetchUser, {
     variables: { userId },
   })
-  const {data: datap} = useQuery<FetchProjects>(fetchProjects, {fetchPolicy: 'network-only'})
+
 
   // const { loading, data } = useQuery<FetchUser, FetchUserVariables>(fetchUser, {
   //   variables: { userId },
@@ -44,35 +42,20 @@ export function ProfilePage(props: ProfilePageProps) {
     return <div>no user</div>
   if (!data.user)
     return <div>no user</div>
-  console.log(data)
-  let name = data.user.name
-  let p = datap
-  let projects = null
-
-    if (!datap)
+  var projects = data.user.projectsPartOf
+  let projectsIn = []
+  for (let i=0;i<projects!.length;i++)
+  {
+    if (projects[i]==null)
     {
-      console.log("no projects")
+      break
     }
     else
     {
-      projects = p!.projects
+      projectsIn.push({title: projects[i].title,href:'http://localhost:3000/app/projects'})
     }
-    console.log(projects)
-    let projectsIn = []
-    if (projects)
-    {
-      for (let i=0;i<projects!.length;i++)
-      {
-        for (let j = 0;j<projects[i].usersInProject.length;j++)
-        {
-          let temp = projects[i].usersInProject[j]
-          if (temp && temp.name==name)
-          {
-            projectsIn.push({title: projects[i].title,href:'http://localhost:3000/app/projects'})
-          }
-        }
-      }
-    }
+  }
+
 
 
 
