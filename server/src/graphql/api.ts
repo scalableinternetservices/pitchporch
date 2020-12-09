@@ -1,4 +1,3 @@
-import DataLoader from 'dataloader'
 import { readFileSync } from 'fs'
 import { PubSub } from 'graphql-yoga'
 import path from 'path'
@@ -22,8 +21,6 @@ interface Context {
   request: Request
   response: Response
   pubsub: PubSub
-  userLoader: DataLoader<number, User>
-  projectLoader: DataLoader<number, Project>
 }
 
 export const graphqlRoot: Resolvers<Context> = {

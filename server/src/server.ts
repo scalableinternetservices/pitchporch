@@ -9,7 +9,6 @@ require('honeycomb-beeline')({
 import assert from 'assert'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import DataLoader from 'dataloader'
 import { json, raw, RequestHandler, static as expressStatic } from 'express'
 import { getOperationAST, parse as parseGraphql, specifiedRules, subscribe as gqlSubscribe, validate } from 'graphql'
 import { GraphQLServer } from 'graphql-yoga'
@@ -30,56 +29,17 @@ import { UserType } from './graphql/schema.types'
 import { expressLambdaProxy } from './lambda/handler'
 import { renderApp } from './render'
 
-const createUserLoader = () =>
-  new DataLoader<number, User>(async userIds => {
-    const users = await User.findByIds(userIds as number[])
-    const userIdToUser: Record<number, User> = {}
-    users.forEach(s => {
-      userIdToUser[s.id] = s
-    })
-    return userIds.map(sid => userIdToUser[sid])
-  })
-
-const createProjectLoader = () =>
-  new DataLoader<number, Project>(async projectIds => {
-    const projects = await Project.findByIds(projectIds as number[])
-    const projectIdToProject: Record<number, Project> = {}
-    projects.forEach(s => {
-      projectIdToProject[s.id] = s
-    })
-    return projectIds.map(sid => projectIdToProject[sid])
-  })
 
 const server = new GraphQLServer({
   typeDefs: getSchema(),
   resolvers: graphqlRoot as any,
-  context: ctx => ({
-    ...ctx,
-    pubsub,
-    user: (ctx.request as any)?.user || null,
-    userLoader: createUserLoader(),
-    projectLoader: createProjectLoader(),
-  }),
+  context: ctx => ({ ...ctx, pubsub, user: (ctx.request as any)?.user || null }),
 })
 
 server.express.use(cookieParser())
 server.express.use(json())
 server.express.use(raw())
-server.express.use(
-    '/app',
-    cors(),
-    expressStatic(path.join(__dirname, '../../public'),
-    {
-      setHeaders: (res,path) =>
-      {
-        if (path.endsWith('/login'))
-          res.setHeader('Cache-Control','private')
-        else
-          res.setHeader('Cache-Control','max-stale=10s')
-      },
-    }
-  )
-)
+server.express.use('/app', cors(), expressStatic(path.join(__dirname, '../../public')))
 
 const asyncRoute = (fn: RequestHandler) => (...args: Parameters<RequestHandler>) =>
   fn(args[0], args[1], args[2]).catch(args[2])
@@ -91,7 +51,7 @@ server.express.get('/', (req, res) => {
 
 server.express.get('/app/*', (req, res) => {
   console.log('GET /app')
-  renderApp(req, res, server.executableSchema)
+  renderApp(req, res)
 })
 
 const SESSION_DURATION = 30 * 24 * 60 * 60 * 1000 // 30 days
