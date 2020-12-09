@@ -5,6 +5,7 @@ import * as React from 'react';
 import { useContext } from 'react';
 import { ColorName, Colors } from '../../../../common/src/colors';
 import {
+  FetchProjects,
   FetchUser,
   FetchUserVariables
 } from '../../graphql/query.gen';
@@ -15,15 +16,17 @@ import { BodyText, IntroText } from '../../style/text';
 import { UserContext } from '../auth/user';
 import { Link } from '../nav/Link';
 import { AppRouteParams } from '../nav/route';
+import { fetchProjects } from './fetchProjects';
 import { fetchUser } from './fetchUsers';
 import { Page } from './Page';
-
 interface ProfilePageProps extends RouteComponentProps, AppRouteParams {}
 
 
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function ProfilePage(props: ProfilePageProps) {
+
+
   const { user } = useContext(UserContext)
   if (!user)
     return <div>no user</div>
@@ -31,6 +34,7 @@ export function ProfilePage(props: ProfilePageProps) {
   const { loading, data } = useQuery<FetchUser, FetchUserVariables>(fetchUser, {
     variables: { userId },
   })
+  const {data: datap} = useQuery<FetchProjects>(fetchProjects, {fetchPolicy: 'network-only'})
 
   // const { loading, data } = useQuery<FetchUser, FetchUserVariables>(fetchUser, {
   //   variables: { userId },
@@ -41,6 +45,38 @@ export function ProfilePage(props: ProfilePageProps) {
   if (!data.user)
     return <div>no user</div>
   console.log(data)
+  let name = data.user.name
+  let p = datap
+  let projects = null
+
+    if (!datap)
+    {
+      console.log("no projects")
+    }
+    else
+    {
+      projects = p!.projects
+    }
+    console.log(projects)
+    let projectsIn = []
+    if (projects)
+    {
+      for (let i=0;i<projects!.length;i++)
+      {
+        for (let j = 0;j<projects[i].usersInProject.length;j++)
+        {
+          let temp = projects[i].usersInProject[j]
+          if (temp && temp.name==name)
+          {
+            projectsIn.push({title: projects[i].title,href:'http://localhost:3000/app/projects'})
+          }
+        }
+      }
+    }
+
+
+
+  console.log("here")
   //console.log(window.document.cookie)
   return (
     <Page>
@@ -56,19 +92,7 @@ export function ProfilePage(props: ProfilePageProps) {
               name={data.user.name}
               email={data.user.email}
               href="#"
-              description="What is up with it"
-              socialMedia={[
-                {
-                  title: 'LinkedIn',
-                  href: 'https://www.linkedin.com/in/nikhil-s-aa8451133/',
-                },
-              ]}
-              projects={[
-                {
-                  title: 'Blog',
-                  href: 'https://github.com/nsrikumar1/Blogger',
-                },
-              ]}
+              projects={projectsIn}
             />
 
           </tbody>
@@ -77,6 +101,7 @@ export function ProfilePage(props: ProfilePageProps) {
     </Page>
   )
 }
+
 
 interface socialMedia {
   title: string
