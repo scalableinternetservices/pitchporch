@@ -73,7 +73,7 @@ server.express.use(
       setHeaders: (res,path) =>
       {
         if (path.endsWith('/login'))
-          res.setHeader('Cache-Control','private')
+          res.setHeader('Cache-Control','public')
         else
           res.setHeader('Cache-Control','max-stale=10s')
       },
