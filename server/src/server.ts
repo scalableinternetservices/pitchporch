@@ -31,27 +31,24 @@ import { expressLambdaProxy } from './lambda/handler'
 import { renderApp } from './render'
 
 const createUserLoader = () =>
-new DataLoader<number, User>(async userIds => {
-  const users = await User.findByIds(userIds as number[])
-  const userIdToUser: Record<number, User> = {}
-  users.forEach(s => {
-    userIdToUser[s.id] = s
+  new DataLoader<number, User>(async userIds => {
+    const users = await User.findByIds(userIds as number[])
+    const userIdToUser: Record<number, User> = {}
+    users.forEach(s => {
+      userIdToUser[s.id] = s
+    })
+    return userIds.map(sid => userIdToUser[sid])
   })
-  return userIds.map(sid => userIdToUser[sid])
-})
 
 const createProjectLoader = () =>
-new DataLoader<number, Project>(async projectIds => {
-  const projects = await Project.findByIds(projectIds as number[])
-  const projectIdToProject: Record<number, Project> = {}
-  projects.forEach(s => {
-    projectIdToProject[s.id] = s
+  new DataLoader<number, Project>(async projectIds => {
+    const projects = await Project.findByIds(projectIds as number[])
+    const projectIdToProject: Record<number, Project> = {}
+    projects.forEach(s => {
+      projectIdToProject[s.id] = s
+    })
+    return projectIds.map(sid => projectIdToProject[sid])
   })
-  return projectIds.map(sid => projectIdToProject[sid])
-})
-
-
-
 
 const server = new GraphQLServer({
   typeDefs: getSchema(),
@@ -80,7 +77,7 @@ server.express.get('/', (req, res) => {
 
 server.express.get('/app/*', (req, res) => {
   console.log('GET /app')
-  renderApp(req, res)
+  renderApp(req, res, server.executableSchema)
 })
 
 const SESSION_DURATION = 30 * 24 * 60 * 60 * 1000 // 30 days
@@ -102,7 +99,7 @@ server.express.post(
     res
       .status(200)
       .cookie('authToken', authToken, { maxAge: SESSION_DURATION, path: '/', httpOnly: true, secure: Config.isProd })
-      .json({ userId: user.id.toString()})
+      .json({ userId: user.id.toString() })
   })
 )
 
@@ -140,7 +137,6 @@ async function createSession(user: User): Promise<string> {
   return authToken
 }
 
-
 server.express.post(
   '/auth/logout',
   asyncRoute(async (req, res) => {
@@ -169,9 +165,7 @@ server.express.post(
         project.createdBy = session.user
         // save the Project model to the database
         project = await project.save()
-        res
-        .status(200)
-        .json({ projectId: project.id.toString()})
+        res.status(200).json({ projectId: project.id.toString() })
         return
       }
     }
