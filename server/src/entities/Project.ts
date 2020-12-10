@@ -22,13 +22,13 @@ export class Project extends BaseEntity {
   description: string
 
   @ManyToOne(() => User, user => user.projectsCreated, {
-    eager: true
+    lazy: true
   })
   @JoinColumn()
   createdBy: User
 
   @ManyToMany(() => User, user => user.projectsPartOf, {
-    eager: true
+    lazy: true
   })
   usersInProject: User[]
 }

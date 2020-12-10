@@ -65,7 +65,21 @@ const server = new GraphQLServer({
 server.express.use(cookieParser())
 server.express.use(json())
 server.express.use(raw())
-server.express.use('/app', cors(), expressStatic(path.join(__dirname, '../../public')))
+server.express.use(
+    '/app',
+    cors(),
+    expressStatic(path.join(__dirname, '../../public'),
+    {
+      setHeaders: (res,path) =>
+      {
+        if (path.endsWith('/login'))
+          res.setHeader('Cache-Control','public')
+        else
+          res.setHeader('Cache-Control','max-stale=10s')
+      },
+    }
+  )
+)
 
 const asyncRoute = (fn: RequestHandler) => (...args: Parameters<RequestHandler>) =>
   fn(args[0], args[1], args[2]).catch(args[2])

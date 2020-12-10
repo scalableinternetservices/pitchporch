@@ -5,7 +5,7 @@ export const fragmentUser = gql`
     id
     name
     email
-
+    projectsPartOf{title}
   }
 `
 
